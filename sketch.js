@@ -1,6 +1,7 @@
 var monkey, monkey_running;
 var ground;
 var banana, bananaImage, obstacle, obstacleImage;
+var bgImage;
 var bananaGroup, obstacleGroup;
 var randY;
 var FoodGroup, obstacleGroup;
@@ -14,6 +15,8 @@ function preload() {
 
 	bananaImage = loadImage('banana.png');
 	obstacleImage = loadImage('obstacle.png');
+
+	bgImage = loadImage('backgorund.jpeg');
 }
 
 function setup() {
@@ -51,7 +54,7 @@ function bananaFunc() {
 		banana.addImage('banana', bananaImage);
 		//banana.velocityX = -4;
 		banana.scale = 0.1;
-		banana.lifetime = 200;
+		banana.lifetime = 400;
 		bananaGroup.add(banana);
 		console.log('minion food');
 	}
@@ -67,7 +70,7 @@ function obFunc() {
 		//obstacle.velocityX = -5;
 		obstacle.addImage('obImage', obstacleImage);
 		obstacle.scale = 0.1;
-		obstacle.lifetime = 200;
+		obstacle.lifetime = 400;
 		obstacleGroup.add(obstacle);
 	}
 	if (obstacleGroup.isTouching(monkey)) {
@@ -82,11 +85,13 @@ function survTime() {
 	if (!monkey.isTouching(obstacleGroup)) {
 		score = frameCount;
 	}
+	stroke('red');
+	fill('red');
 	text('Survival Time: ' + score, camera.position.x, 20);
 }
 
 function draw() {
-	background('white');
+	background(bgImage);
 	if (monkey.isTouching(obstacleGroup) || gameState === END) {
 		obstacleGroup.setVelocityXEach(0);
 		bananaGroup.setVelocityXEach(0);
@@ -94,6 +99,11 @@ function draw() {
 		ground.velocityX = 0;
 		console.log('Hm...');
 		gameState = END;
+		background('gray');
+		textAlign(CENTER, CENTER);
+		fill('red');
+		textSize(20);
+		text('Game Over! Your score was ' + score, camera.position.x, 200);
 	}
 
 	if (gameState === PLAY) {
